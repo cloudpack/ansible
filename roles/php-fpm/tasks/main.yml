@@ -1,0 +1,8 @@
+- name: install php-fpm
+  yum: name=php-fpm
+- name: replace user from apache to nginx
+  replace: dest=/etc/php-fpm.d/www.conf regexp="user = apache" replace="user = nginx"
+- name: replace group from apache to nginx
+  replace: dest=/etc/php-fpm.d/www.conf regexp="group = apache" replace="group = nginx"
+- name: start php-fpm
+  service: name=php-fpm state=started enabled=yes
