@@ -1,13 +1,13 @@
 - name: install nginx
   yum: name=nginx
 - name: copy /etc/nginx/
-  copy: src=etc/nginx/ dest=/etc/nginx/
+  copy: src=etc/nginx/ dest=/etc/nginx/ backup=yes
 - name: copy /usr/share/nginx/html/
-  copy: src=usr/share/nginx/html/ dest=/usr/share/nginx/html/
+  copy: src=usr/share/nginx/html/ dest=/usr/share/nginx/html/ backup=yes
 - name: restart nginx
   service: name=nginx state=restarted enabled=yes
 
 - name: copy /etc/awslogs/config/
-  copy: src=etc/awslogs/config/ dest=/etc/awslogs/config/
+  copy: src=etc/awslogs/config/ dest=/etc/awslogs/config/ backup=yes
 - name: restart awslogs agent
   service: name=awslogs state=restarted enabled=yes

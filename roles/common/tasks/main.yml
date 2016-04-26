@@ -9,7 +9,7 @@
 - name: install awslogs agent
   yum: name=awslogs
 - name: copy /etc/awslogs/
-  copy: src=etc/awslogs/ dest=/etc/awslogs/
+  copy: src=etc/awslogs/ dest=/etc/awslogs/ backup=yes
 - name: set region to /etc/awslogs/awscli.conf
   replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace={{ lookup("env","AWS_DEFAULT_REGION") }}
 - name: restart awslogs agent
