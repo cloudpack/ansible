@@ -1,0 +1,5 @@
+- include: centos7-php54.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
+
+- include: amazon-linux-php53.yml
+  when: ansible_distribution == 'Amazon'

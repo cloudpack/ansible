@@ -1,0 +1,4 @@
+- name: (MonitoringTools Command) yum install
+  yum: name={{ item }} state=latest
+  with_items:
+    - monit

@@ -1,0 +1,13 @@
+/var/log/httpd/*log {
+    daily
+    rotate 31
+    compres
+    dateext
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+        /etc/init.d/httpd reload > /dev/null 2>/dev/null || true
+    endscript
+}

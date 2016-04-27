@@ -1,0 +1,37 @@
+#- name: (useradd) check config.yml exists in local
+#  local_action: stat path="roles/common/vars/main.yml"
+#  register: file
+#  ignore_errors: True
+
+- name: (useradd) useradd
+  user: name={{ item.ssh_user }} generate_ssh_key=yes
+  with_items:
+    - "{{ user }}"
+#  when: file.stat.exists
+
+- name: (useradd) Create an authorized_keys file
+  command: /bin/cp /home/{{ item.ssh_user }}/.ssh/id_rsa.pub /home/{{ item.ssh_user }}/.ssh/authorized_keys
+  with_items:
+    - "{{ user }}"
+#  when: file.stat.exists
+
+- name: (useradd) Change attributes of an authorized_keys file
+  file:
+    path: /home/{{ item.ssh_user }}/.ssh/authorized_keys
+    owner: "{{ item.ssh_user }}"
+    group: "{{ item.ssh_user }}"
+    mode: 0600
+  with_items:
+    - "{{ user }}"
+#  when: file.stat.exists
+
+#- name: (useradd) Retrieve a private key from remote host
+#  fetch:
+#    src: /home/{{ item.ssh_user }}/.ssh/id_rsa
+#    dest: fetch/private_key-{{ item.ssh_user }}
+#    validate_md5: true
+#    fail_on_missing: true
+#    flat: true
+#  with_items:
+#    - "{{ user }}"
+#  when: file.stat.exists

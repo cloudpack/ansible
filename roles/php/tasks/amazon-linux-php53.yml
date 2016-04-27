@@ -1,0 +1,21 @@
+- name: Install php package
+  yum: name={{ item }} state=present
+  with_items:
+    - php
+    - php-cli
+    - php-pdo
+    - php-mbstring
+    - php-mcrypt
+    - php-pecl-memcache
+    - php-mysql
+    - php-devel
+    - php-common
+    - php-pgsql
+    - php-pear
+    - php-gd
+    - php-xml
+    - php-pecl-xdebug
+    - php-pecl-apc
+
+- name: Configure php.ini
+  copy: src=php53.ini dest=/etc/php.ini owner=root group=root mode=0644

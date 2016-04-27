@@ -1,0 +1,4 @@
+- name: (EPEL) EPEL Install
+  yum: name={{ item }} state=latest
+  with_items:
+    - epel-release

@@ -1,0 +1,18 @@
+- name: yum install for ftp
+  yum: name={{ item }} state=latest
+  with_items:
+    - vsftpd
+    - mod_ssl
+  notify: restart vsftpd
+
+- name: Start to vsftpd
+  service: name=vsftpd enabled=yes
+
+- name: Start to vsftpd
+  service: name=vsftpd state=started
+
+- include: centos7-vsftpd30.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
+
+- include: amazon-linux-vsftpd22.yml
+  when: ansible_distribution == 'Amazon'

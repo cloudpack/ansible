@@ -1,0 +1,3 @@
+user:
+ - { ssh_user: joy }
+ - { ssh_user: tom }

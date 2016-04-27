@@ -1,0 +1,3 @@
+site:
+ - { domain: "www.test1.com", owner: "root" }
+ - { domain: "www.test2.co.jp", owner: "apache" }

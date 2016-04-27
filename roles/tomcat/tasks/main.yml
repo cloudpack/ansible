@@ -1,0 +1,12 @@
+- name: yum install for Tomcat Application Server
+  yum: name=={{ item }} state=latest
+  with_items:
+    - java
+    - tomcat
+    - tomcat-webapps
+
+- name: Start to Tomcat
+  service: name=tomcat enabled=yes
+
+- name: Start to Tomcat
+  service: name=tomcat state=started

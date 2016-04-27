@@ -1,0 +1,10 @@
+- name: (Investigation Command) yum install
+  yum: name={{ item }} state=latest
+  with_items:
+    - dstat
+    - sysstat
+    - iotop
+    - mlocate
+    - telnet
+    - htop
+    - strace

@@ -1,0 +1,6 @@
+#- name: (Initialize) Firewalld stopped ( CentOS 7 )
+#  service: name=firewalld state=stopped enabled=no
+
+- name: (Initialize) Locale setting ( CentOS 7 )
+#  shell: localectl set-locale LANG=ja_JP.UTF-8
+  replace: dest="/etc/locale.conf" regexp='^LANG=en_US\.UTF-8' replace='LANG=ja_JP.UTF-8'

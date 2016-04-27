@@ -1,0 +1,40 @@
+#- name: (Kaizen-Operation) Fluentd Download
+#  get_url: url="https://td-toolbelt.herokuapp.com/sh/install-redhat-td-agent2.sh" dest="/usr/local/src/install-redhat-td-agent2.sh" mode=0755
+#
+#- name: (Kaizen-Operation) Fluentd Install
+#  shell: /usr/local/src/install-redhat-td-agent2.sh
+#  args:
+#    creates: /etc/td-agent/
+
+#- name: (Kaizen-Operation) Fluentd Default Stoped
+#  service: name=td-agent state=stopped enabled=no
+
+- name: (Kaizen-Operation) CloudWatch Logs Download
+  get_url: url="https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py" dest="/usr/local/src/awslogs-agent-setup.py" mode=0755
+
+- name: (Kaizen-Operation) CloudWatch Logs Install
+  shell: python /usr/local/src/awslogs-agent-setup.py --region ap-northeast-1 --configfile https://raw.githubusercontent.com/shogomuranushi/playbook/master/roles/common/files/awslogs.conf --non-interactive
+  args:
+    creates: /var/awslogs/
+
+- name: (Kaizen-Operation) CloudWatch Logs Default Stoped
+  service: name=awslogs state=stopped enabled=no
+
+- name: (Kaizen-Operation) CloudWatch for Linux yum initialize
+  yum: name={{ item }} state=latest
+  with_items:
+    - perl-DateTime
+    - perl-Sys-Syslog
+    - perl-LWP-Protocol-https
+    - perl-Digest-SHA
+    - zip
+    - unzip
+
+- name: (Kaizen-Operation) CloudWatch for Linux Download
+  get_url: url="http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.1.zip" dest="/opt/CloudWatchMonitoringScripts-1.2.1.zip" mode=0755
+
+- name: (Kaizen-Operation) SSM agent Download
+  get_url: url="https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
+
+- name: (Kaizen-Operation) SSM agent Install
+  yum: name=/usr/local/src/amazon-ssm-agent.rpm state=present

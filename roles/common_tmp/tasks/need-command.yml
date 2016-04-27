@@ -1,0 +1,12 @@
+- name: (Need Command) yum install
+  yum: name={{ item }} state=latest
+  with_items:
+    - vim
+    - wget
+    - tree
+    - postfix
+    - unzip
+    - make
+    - gcc
+    - gcc-c++
+    - screen
