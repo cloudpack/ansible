@@ -1,0 +1,3 @@
+- name: install datadog_agent
+  shell: DD_API_KEY={{ DD_API_KEY }} bash -c "$(curl -L https://raw.githubusercontent.com/DataDog/dd-agent/master/packaging/datadog-agent/source/install_agent.sh)"
+  when: datadog == "true"
