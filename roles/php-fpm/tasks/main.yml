@@ -1,12 +1,12 @@
 - name: install php-fpm
   yum: name=php-fpm
 
-- name: start php-fpm
-  service: name=php-fpm state=started enabled=yes
-
 - name: copy /etc/php-fpm.d/
   copy: src=etc/php-fpm.d/ dest=/etc/php-fpm.d/ backup=yes
   notify: restart php-fpm
+
+- name: start php-fpm
+  service: name=php-fpm state=started enabled=yes
 
 - name: install APC
   yum: name=php-pecl-apc
