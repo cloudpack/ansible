@@ -8,6 +8,9 @@
   copy: src=etc/php-fpm.d/ dest=/etc/php-fpm.d/ backup=yes
   notify: restart php-fpm
 
+- name: install APC
+  yum: name=php-pecl-apc
+
 - name: copy /etc/nginx/default.d/
   copy: src=etc/nginx/default.d/ dest=/etc/nginx/default.d/ backup=yes
   notify: restart nginx
