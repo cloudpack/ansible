@@ -1,0 +1,8 @@
+- name: restart php-fpm
+  service: name=php-fpm state=restarted enabled=yes
+
+- name: restart nginx
+  service: name=nginx state=restarted enabled=yes
+
+- name: restart awslogs agent
+  service: name=awslogs state=restarted enabled=yes
