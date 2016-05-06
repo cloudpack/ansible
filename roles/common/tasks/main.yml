@@ -15,8 +15,11 @@
 - name: restart awslogs agent
   service: name=awslogs state=restarted enabled=yes
 
+- name: download ssm agent
+  get_url: url="https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
+
 - name: install ssm agent
-  yum: name=https://amazon-ssm-{{ lookup("env","AWS_DEFAULT_REGION") }}.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm
+  yum: name=/usr/local/src/amazon-ssm-agent.rpm state=present
 
 - name: sshd desable
   service: name=sshd state=stopped enabled=no
