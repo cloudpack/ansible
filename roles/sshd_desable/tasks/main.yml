@@ -1,2 +1,0 @@
-- name: sshd desable
-  service: name=sshd state=stopped enabled=no

@@ -17,3 +17,6 @@
 
 - name: install ssm agent
   yum: name=https://amazon-ssm-{{ lookup("env","AWS_DEFAULT_REGION") }}.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm
+
+- name: sshd desable
+  service: name=sshd state=stopped enabled=no
