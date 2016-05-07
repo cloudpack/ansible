@@ -1,5 +1,6 @@
 - name: (Initialize) Timezone setting
   file: src="/usr/share/zoneinfo/Asia/Tokyo" dest="/etc/localtime" state=link force=yes
+  notify: restart rsyslog agent  
 
 - name: (Initialize) motd.sh setting
   copy: src=motd.sh dest=/etc/profile.d/ owner=root group=root mode=0755
@@ -43,3 +44,6 @@
 - include: initialize-CentOS7.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
 
+- name: sshd desable
+  service: name=sshd state=stopped enabled=no
+  when: sshd == "stopped"

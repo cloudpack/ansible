@@ -1,0 +1,5 @@
+- name: restart awslogs agent
+  service: name=awslogs state=restarted enabled=yes
+
+- name: restart rsyslog agent
+  service: name=rsyslog state=restarted enabled=yes

@@ -1,25 +1,21 @@
-- name: set zone to /etc/sysconfig/clock
-  replace: dest=/etc/sysconfig/clock regexp=UTC replace=Asia/Tokyo
-- name: set localtime
-  file: src=/usr/share/zoneinfo/Asia/Tokyo dest=/etc/localtime state=link force=yes
-
-- name: restart rsyslog agent
-  service: name=rsyslog state=restarted enabled=yes
+- name: (aws sdk) aws sdk install
+  pip: name={{ item }}
+  with_items:
+    - awscli
+    - boto3
 
 - name: install awslogs agent
   yum: name=awslogs
+
 - name: copy /etc/awslogs/
   copy: src=etc/awslogs/ dest=/etc/awslogs/ backup=yes
+  notify: restart awslogs agent
+
 - name: set region to /etc/awslogs/awscli.conf
   replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace={{ lookup("env","AWS_DEFAULT_REGION") }}
-- name: restart awslogs agent
-  service: name=awslogs state=restarted enabled=yes
+  notify: restart awslogs agent
 
 - name: download ssm agent
   get_url: url="https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
-
 - name: install ssm agent
   yum: name=/usr/local/src/amazon-ssm-agent.rpm state=present
-
-- name: sshd desable
-  service: name=sshd state=stopped enabled=no

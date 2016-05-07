@@ -6,6 +6,7 @@
 
 - name: (Initialize) Timezone setting ( CentOS 6 )
   replace: dest="/etc/sysconfig/clock" regexp='^ZONE=\"UTC\"' replace='ZONE="Asia/Tokyo"'
+  notify: restart rsyslog agent
 
 - name: (Initialize) Locale setting ( CentOS 6 )
   replace: dest="/etc/sysconfig/i18n" regexp='^LANG=en_US\.UTF-8' replace='LANG=ja_JP.UTF-8'
