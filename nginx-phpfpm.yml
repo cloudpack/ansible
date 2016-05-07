@@ -5,3 +5,4 @@
       - common
       - nginx
       - php-fpm
+      - datadog
