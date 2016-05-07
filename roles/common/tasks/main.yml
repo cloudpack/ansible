@@ -1,5 +1,4 @@
 - include: epel.yml
 - include: command.yml
 - include: aws.yml
-- include: initialize2.yml
 - include: initialize.yml
