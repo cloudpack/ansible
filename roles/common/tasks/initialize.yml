@@ -1,0 +1,45 @@
+- name: (Initialize) Timezone setting
+  file: src="/usr/share/zoneinfo/Asia/Tokyo" dest="/etc/localtime" state=link force=yes
+
+- name: (Initialize) motd.sh setting
+  copy: src=motd.sh dest=/etc/profile.d/ owner=root group=root mode=0755
+
+- name: (Initialize) history file setting 1
+  lineinfile:
+    dest: /etc/bashrc
+    line: HISTSIZE=10000
+
+- name: (Initialize) history file setting 2
+  lineinfile:
+    dest: /etc/bashrc
+    line: HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '
+
+- set_fact:
+    swap_file_path: /swapfile
+- command: dd if=/dev/zero of={{ swap_file_path }} bs={{ ansible_memtotal_mb }} count=1M
+  args:
+    creates: '{{ swap_file_path }}'
+- file:
+    path: '{{ swap_file_path }}'
+    mode: '0600'
+- command: file {{ swap_file_path }}
+  register: swap_file_test
+- command: mkswap {{ swap_file_path }}
+  when: swap_file_test.stdout.find('swap file') == -1
+- command: swapon {{ swap_file_path }}
+  when: ansible_swaptotal_mb < 1
+- mount:
+    name: swap
+    src: '{{ swap_file_path }}'
+    fstype: swap
+    opts: defaults
+    passno: '0'
+    dump: '0'
+    state: present
+
+- include: initialize-CentOS6.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 6
+
+- include: initialize-CentOS7.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
+

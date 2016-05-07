@@ -1,0 +1,11 @@
+- name: (Initialize) iptables stopped ( CentOS 6 )
+  service: name=iptables state=stopped enabled=no
+
+- name: (Initialize) ip6tables stopped ( CentOS 6 )
+  service: name=ip6tables state=stopped enabled=no
+
+- name: (Initialize) Timezone setting ( CentOS 6 )
+  replace: dest="/etc/sysconfig/clock" regexp='^ZONE=\"UTC\"' replace='ZONE="Asia/Tokyo"'
+
+- name: (Initialize) Locale setting ( CentOS 6 )
+  replace: dest="/etc/sysconfig/i18n" regexp='^LANG=en_US\.UTF-8' replace='LANG=ja_JP.UTF-8'
