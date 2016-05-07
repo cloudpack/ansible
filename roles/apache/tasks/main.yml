@@ -1,7 +1,5 @@
 - name: yum install for Apache Web Server
   yum: name=httpd state=latest
-  with_items:
-    - httpd
 
 - name: Start to Apache
   service: name=httpd enabled=yes
