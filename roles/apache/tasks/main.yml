@@ -62,3 +62,8 @@
 - name: logrotate ( CentOS7 Apache 2.4 )
   copy: src=logrotate-http24 dest=/etc/logrotate.d/httpd owner=root group=root mode=0644
   when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
+
+- name: copy /etc/etc/dd-agent/
+  copy: src=etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
+  when: datadog == "true"
+  notify: restart datadog-agent

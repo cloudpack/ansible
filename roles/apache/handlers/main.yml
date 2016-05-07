@@ -1,2 +1,5 @@
 - name: restart httpd
   service: name=httpd state=restarted
+
+- name: restart datadog-agent
+  service: name=datadog-agent state=restarted
