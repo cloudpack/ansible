@@ -8,8 +8,8 @@
 - name: start php-fpm
   service: name=php-fpm state=started enabled=yes
 
-- name: install APC
-  yum: name=php-pecl-apc
+#- name: install APC
+#  yum: name=php-pecl-apc
 
 - name: copy /etc/nginx/default.d/
   copy: src=etc/nginx/default.d/ dest=/etc/nginx/default.d/ backup=yes
