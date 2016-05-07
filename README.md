@@ -19,14 +19,14 @@ CFn内のUserDataでも可です。
     ansible-playbook ansible/xxx.yml
 
 ## CloudFormation Version (HereDocumetn Only)
-    # "cat <<EOF > ansible/group_vars/all.yml\n",
-    # "datadog: ",
-    # { "Ref": "datadog" },
-    # "\n",
-    # "DD_API_KEY: ",
-    # { "Ref": "DD_API_KEY" },
-    # "\n",
-    # "EOF\n",
+    "cat <<EOF > ansible/group_vars/all.yml\n",
+    "datadog: ",
+    { "Ref": "datadog" },
+    "\n",
+    "DD_API_KEY: ",
+    { "Ref": "DD_API_KEY" },
+    "\n",
+    "EOF\n",
 
 # ルール
 ## 各Role内は以下を含めて下さい
