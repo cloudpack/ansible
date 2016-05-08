@@ -18,6 +18,7 @@
 - name: copy /usr/share/nginx/html/
   copy: src=usr/share/nginx/html/ dest=/usr/share/nginx/html/ backup=yes
 
+## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
 - name: copy /etc/awslogs/config/
   copy: src=etc/awslogs/config/ dest=/etc/awslogs/config/ backup=yes
   notify: restart awslogs agent
@@ -26,3 +27,6 @@
   copy: src=etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
   when: datadog == "true"
   notify: restart datadog-agent
+
+- name: copy /etc/logrotate.d/
+  copy: src=/etc/logrotate.d/ dest=/etc/logrotate.d/
