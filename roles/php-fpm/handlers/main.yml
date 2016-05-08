@@ -6,3 +6,6 @@
 
 - name: restart awslogs agent
   service: name=awslogs state=restarted enabled=yes
+
+- name: restart datadog-agent
+  service: name=datadog-agent state=restarted
