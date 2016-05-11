@@ -12,7 +12,7 @@
   notify: restart awslogs agent
 
 - name: set region to /etc/awslogs/awscli.conf
-  replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace={{ lookup("env","AWS_DEFAULT_REGION") }}
+  replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace=ap-northeast-1
   notify: restart awslogs agent
 
 - name: download ssm agent
