@@ -9,6 +9,11 @@
     - remi-php70
     - remi-safe
 
+- name: priority modifyed to remi-php70
+  yum_repository:
+    name: remi-php70
+    priority: 1
+
 - name: install php-fpm
   yum: name={{ item }} state=latest enablerepo=remi-php70,remi
   with_items:
