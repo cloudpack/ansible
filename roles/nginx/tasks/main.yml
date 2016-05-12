@@ -22,7 +22,7 @@
 
 - name: copy /etc/etc/dd-agent/
   copy: src=etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
-  when: datadog == "true"
+  when: datadog == true
   notify: restart datadog-agent
 
 - name: copy /etc/logrotate.d/
