@@ -50,7 +50,7 @@
   copy: src=etc/awslogs/config/ dest=/etc/awslogs/config/ backup=yes
   notify: restart awslogs agent
 
-- name: copy /etc/etc/dd-agent/
+- name: copy /etc/dd-agent/
   copy: src=etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
   when: datadog == true
   notify: restart datadog-agent
