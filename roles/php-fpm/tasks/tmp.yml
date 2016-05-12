@@ -1,37 +1,5 @@
-- name: remi Install
-  yum: name={{ item }} state=latest
-  with_items:
-    - http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
-
-- replace: dest=/etc/yum.repos.d/{{item}} regexp="enabled *= *1" replace="enabled=0"
-  with_items:
-    - remi.repo
-    - remi-php70
-    - remi-safe
-
-- name: priority modifyed to remi-php70
-  yum_repository:
-    name: remi-php70
-    priority: 1
-
 - name: install php-fpm
-  yum: name={{ item }} state=latest enablerepo=remi-php70,remi
-  with_items:
-    - php
-    - php-fpm
-    - php-mcrypt
-    - php-cli
-    - php-common
-    - php-devel
-    - php-mbstring
-    - php-mysqlnd
-    - php-opcache
-    - php-pdo
-    - php-pear
-    - php-pecl-apcu
-    - php-process
-    - php-xml
-    - php-gd
+  yum: name=php-fpm
 
 - name: copy /etc/php-fpm.d/
   copy: src=etc/php-fpm.d/ dest=/etc/php-fpm.d/ backup=yes
@@ -40,9 +8,15 @@
 - name: start php-fpm
   service: name=php-fpm state=started enabled=yes
 
+#- name: install APC
+#  yum: name=php-pecl-apc
+
 - name: copy /etc/nginx/default.d/
   copy: src=etc/nginx/default.d/ dest=/etc/nginx/default.d/ backup=yes
   notify: restart nginx
+
+- name: copy /usr/share/nginx/html/
+  copy: src=usr/share/nginx/html/ dest=/usr/share/nginx/html/ backup=yes
 
 ## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
 - name: copy /etc/awslogs/config/
