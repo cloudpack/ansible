@@ -44,6 +44,6 @@
 - include: initialize-CentOS7.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
 
-- name: sshd desable
+- name: sshd disable
   service: name=sshd state=stopped enabled=no
   when: sshd == "stopped"
