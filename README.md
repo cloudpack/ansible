@@ -18,7 +18,7 @@ CFn内のUserDataでも可です。
     EOF
     ansible-playbook ansible/xxx.yml
 
-## CloudFormation Version (HereDocumetn Only)
+## CloudFormation Version (HereDocument Only)
     "cat <<EOF > ansible/group_vars/all.yml\n",
     "datadog: ",
     { "Ref": "datadog" },

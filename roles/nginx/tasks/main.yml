@@ -26,4 +26,4 @@
   notify: restart datadog-agent
 
 - name: copy /etc/logrotate.d/
-  copy: src=/etc/logrotate.d/ dest=/etc/logrotate.d/
+  copy: src=etc/logrotate.d/ dest=/etc/logrotate.d/
