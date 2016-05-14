@@ -18,6 +18,9 @@ CFn内のUserDataでも可です。
     EOF
     ansible-playbook ansible/xxx.yml
 
+    # sshdを有効にしたい場合
+    # ansible-playbook ansible/xxx.yml -e "sshd=enable"
+
 ## CloudFormation Version (HereDocument Only)
     "cat <<EOF > ansible/group_vars/all.yml\n",
     "datadog: ",
@@ -29,10 +32,11 @@ CFn内のUserDataでも可です。
     "EOF\n",
 
 # ルール
-## 各Role内は以下を含めて下さい
-### ログファイルが出力される場合
-logrotateのconfファイルを配置し、ローテーションを実行
-### CloudWatchLogsにログの転送が必要場合（ログファイルを外出ししたい場合）
-CloudWatch Logs Agentのconfファイル 
-### Datadogで個別メトリクスを収集したい場合
-必要に応じてDatadogのyamlの配置＋yamlの書き換え
+## 各Role追加時には以下を考慮し追加してください
+- ログファイルが出力される場合
+-- logrotateのconfファイルを配置する
+-- CloudWatch Logs Agentのconfファイルを配置する
+- DatadogのIntegrationがある場合
+-- Datadogのyamlの配置する
+- プロセスがある場合
+-- monitのconfを配置する
