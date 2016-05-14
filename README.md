@@ -6,9 +6,10 @@ CFn内のUserDataでも可です。
     #!/bin/sh
     yum update -y
     yum install epel-release -y
-    yum install gcc python-devel python-crypto python-pip git -y
-    easy_install pip
-    pip install ansible
+    yum install ansible --enablerepo=epel -y
+    # yum install gcc python-devel python-crypto python-pip git -y
+    # easy_install pip
+    # pip install ansible
     cd ~
     git clone https://github.com/cloudpack/ansible.git
 
@@ -30,6 +31,10 @@ CFn内のUserDataでも可です。
     { "Ref": "DD_API_KEY" },
     "\n",
     "EOF\n",
+
+# 必要なIAMロール権限
+- AmazonEC2RoleforSSM
+- CloudWatchLogsFullAccess
 
 # ルール
 ## 各Role追加時には以下を考慮し追加してください
