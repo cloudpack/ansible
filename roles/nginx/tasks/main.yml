@@ -15,9 +15,22 @@
 - name: copy /usr/share/nginx/html/
   copy: src=usr/share/nginx/html/ dest=/usr/share/nginx/html/ backup=yes
 
+- name: Makes to VirtualHost
+  template: src=virtualhost.conf dest=/etc/nginx/conf.d/{{ item.domain }}.conf
+  with_items:
+    - "{{ site }}"
+  notify: restart nginx
+
+- name: Makes to VirtualHost DocumentRoot
+  file: path=/var/www/{{ item.domain }} state=directory owner={{ item.owner }} group={{ item.group }} mode=0755
+  with_items:
+    - "{{ site }}"
+
 ## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
 - name: copy /etc/awslogs/config/
-  copy: src=etc/awslogs/config/ dest=/etc/awslogs/config/ backup=yes
+  template: src=awslogs.conf dest=/etc/awslogs/config/nginx-{{ item.domain }}.conf backup=yes
+  with_items:
+    - "{{ site }}"
   notify: restart awslogs agent
 
 - name: copy /etc/dd-agent/
