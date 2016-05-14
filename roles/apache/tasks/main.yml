@@ -38,6 +38,7 @@
     - "{{ site }}"
 
 ## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
+- name: copy /etc/awslogs/config/
   template: src=awslogs.conf dest=/etc/awslogs/config/apache-{{ item.domain }}.conf backup=yes
   with_items:
     - "{{ site }}"
