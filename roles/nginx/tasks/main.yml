@@ -1,7 +1,7 @@
 - name: install nginx
   yum: name=nginx
 
-- name: start nginx
+- name: Start and Enable to nginx
   service: name=nginx state=started enabled=yes
 
 - name: copy /etc/nginx/
