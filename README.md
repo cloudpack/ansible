@@ -6,8 +6,10 @@ CFn内のUserDataでも可です。
     #!/bin/sh
     yum update -y
     yum install epel-release -y
-    yum install gcc python-devel python-crypto python-pip git -y
+    yum install gcc python-devel python-crypto python-pip git openssl-devel libffi-devel -y
     easy_install pip
+    pip install --upgrade pip
+    pip install --upgrade setuptools
     pip install ansible
     cd ~
     git clone https://github.com/cloudpack/ansible.git
