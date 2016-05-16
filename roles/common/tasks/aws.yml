@@ -6,14 +6,34 @@
 
 - name: install awslogs agent
   yum: name=awslogs
+  when: "ansible_distribution == 'Amazon'"
 
 - name: copy /etc/awslogs/
   copy: src=etc/awslogs/ dest=/etc/awslogs/ backup=yes
   notify: restart awslogs agent
+  when: "ansible_distribution == 'Amazon'"
 
 - name: set region to /etc/awslogs/awscli.conf
   replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace=ap-northeast-1
   notify: restart awslogs agent
+  when: "ansible_distribution == 'Amazon'"
+
+- name: check exists awslogs startup script
+  stat: path="/etc/init.d/awslogs"
+  register: check_startup_file
+
+- name: Install awslogs agent to RHEL or CentOS
+  shell: |
+    curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -o /tmp/awslogs-agent-setup.py
+    python /tmp/awslogs-agent-setup.py --region `curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e s/.$//g` --non-interactive --configfile ansible/roles/common/files/etc/awslogs/awslogs.conf
+  notify: restart awslogs agent
+  when: "ansible_os_family == 'RedHat'"
+  when: not check_startup_file.stat.exists
+
+- name: copy /var/awslogs/etc/
+  copy: src=etc/awslogs/ dest=/var/awslogs/etc/ backup=yes
+  notify: restart awslogs agent
+  when: "ansible_os_family == 'RedHat'"
 
 - name: download ssm agent
   get_url: url="https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
