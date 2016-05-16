@@ -6,7 +6,6 @@ end
 
 describe yumrepo('epel') do
   it { should exist }
-  it { should_not be_enabled}
 end
 
 %w{
@@ -39,16 +38,23 @@ end
   end
 end
 
-describe package('awslogs') do
-  it { should be_installed }
-end
-
 describe service('awslogs') do
   it { should be_enabled }
   it { should be_running }
 end
 
-describe file('/etc/awslogs/awslogs.conf') do
+if os[:family] == 'amazon'
+  describe package('awslogs') do
+    it { should be_installed }
+  end
+  awslogs_conf = '/etc/awslogs/awslogs.conf'
+  awscli_conf = '/etc/awslogs/awscli.conf'
+elsif os[:family] == 'redhat'
+  awslogs_conf = '/var/awslogs/etc/awslogs.conf'
+  awscli_conf = '/var/awslogs/etc/aws.conf'
+end
+
+describe file(awslogs_conf) do
   its(:content) { should match /^\[general\]$/ }
   its(:content) { should match /^\[\/var\/log\/messages\]$/ }
   its(:content) { should match /^\[\/var\/log\/cron\]$/ }
@@ -60,7 +66,7 @@ describe file('/etc/awslogs/awslogs.conf') do
   its(:content) { should match /^\[\/var\/log\/awslogs\.log\]$/ }
 end
 
-describe file('/etc/awslogs/awscli.conf') do
+describe file(awscli_conf) do
   its(:content) { should match /^region = ap-northeast-1$/ }
 end
 
