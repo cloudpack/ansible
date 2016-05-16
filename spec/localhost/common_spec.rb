@@ -38,19 +38,18 @@ end
   end
 end
 
-describe package('awslogs') do
-  it { should be_installed }
-end
-
 describe service('awslogs') do
   it { should be_enabled }
   it { should be_running }
 end
 
 if os[:family] == 'amazon'
+  describe package('awslogs') do
+    it { should be_installed }
+  end
   awslogs_conf = '/etc/awslogs/awslogs.conf'
   awscli_conf = '/etc/awslogs/awscli.conf'
-elsif os[:family] == 'RedHat'
+elsif os[:family] == 'redhat'
   awslogs_conf = '/var/awslogs/etc/awslogs.conf'
   awscli_conf = '/var/awslogs/etc/aws.conf'
 end
