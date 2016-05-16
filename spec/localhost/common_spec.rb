@@ -1,4 +1,4 @@
-irequire 'spec_helper'
+require 'spec_helper'
 
 describe package('epel-release') do
   it { should be_installed }
