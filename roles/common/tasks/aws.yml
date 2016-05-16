@@ -19,3 +19,22 @@
   get_url: url="https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
 - name: install ssm agent
   yum: name=/usr/local/src/amazon-ssm-agent.rpm state=present
+
+- name: Install Ruby for CodeDeploy
+  yum: name=ruby state=present
+
+- name: check CodeDeploy agent
+  shell: rpm -q codedeploy-agent
+  register: check_codedeploy
+  failed_when: False
+
+- name: Download CodeDeploy agent Installer
+  get_url: url="https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install" dest="/tmp/code-deploy-install" mode=0755
+  when: check_codedeploy.rc == 1
+
+- name: Install CodeDeploy agent
+  shell: /tmp/code-deploy-install auto
+  when: check_codedeploy.rc == 1
+
+- name: Start and Enable CodeDeploy agent
+  service: name=codedeploy-agent state=started enabled=yes
