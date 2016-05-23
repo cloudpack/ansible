@@ -22,3 +22,4 @@
     - gcc
     - gcc-c++
     - screen
+    - mlocate
