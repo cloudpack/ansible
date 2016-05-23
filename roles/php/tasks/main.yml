@@ -5,3 +5,13 @@
 - include: amazon-linux-php53.yml
   when: ansible_distribution == 'Amazon'
 #  when: ansible_distribution == 'Amazon' and {{ php }} == "53"
+
+- name: check exists PHP Composer
+  stat: path="/usr/local/bin/composer"
+  register: check_composer_file
+
+- name: Install PHP Composer
+  shell: |
+    curl -sS https://getcomposer.org/installer | php
+    mv composer.phar /usr/local/bin/composer
+  when: not check_composer_file.stat.exists
