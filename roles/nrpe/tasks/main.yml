@@ -16,3 +16,6 @@
 - name: (nrpe)
   template: src=nrpe.cfg dest=/etc/nagios/
   notify: restart nrpe
+
+- name: nrpe is runnning and enabled
+  service: name=nrpe state=running enabled=yes
