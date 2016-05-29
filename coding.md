@@ -7,7 +7,8 @@
 ## files
 - files直下はOSもしくはVersionのディレクトリを配置する
 ~~~
-ntos6
+.
+├── centos6
 │   └── etc
 │       ├── logrotate.d
 │       │   └── httpd
@@ -42,4 +43,3 @@ ntos6
         ├── logrotate.d
         │   └── httpd
         └── monit.d
-- 
