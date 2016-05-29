@@ -1,0 +1,9 @@
+- name: Change the httpd.conf to template file ( CentOS6 Apache 2.2 )
+  copy: src=ver2.2/etc/httpd/ dest=/etc/httpd/ owner=root group=root mode=0644
+  notify: restart httpd
+
+- name: logrotate ( CentOS6 Apache 2.2 )
+  copy: src=centos6/etc/logrotate.d/ dest=/etc/logrotate.d/ owner=root group=root mode=0644
+
+- name: monit ( CentOS6 Apache 2.2 )
+  copy: src=centos6/etc/monit.d/ dest=/etc/monit.d/ owner=root group=root mode=0644

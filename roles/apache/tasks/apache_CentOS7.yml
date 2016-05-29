@@ -1,0 +1,9 @@
+- name: Change the httpd.conf to template file ( CentOS7 Apache 2.4 )
+  copy: src=ver2.4/etc/httpd/ dest=/etc/httpd/ owner=root group=root mode=0644
+  notify: restart httpd
+
+- name: logrotate ( CentOS7 Apache 2.4 )
+  copy: src=centos7/etc/logrotate.d/ dest=/etc/logrotate.d/ owner=root group=root mode=0644
+
+- name: monit ( CentOS7 Apache 2.4 )
+  copy: src=centos7/etc/monit.d/ dest=/etc/monit.d/ owner=root group=root mode=0644

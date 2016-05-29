@@ -1,28 +1,15 @@
+## Install and Configuration
 - name: yum install for Apache Web Server
   yum: name=httpd
 
 - name: Start and Enable to Apache
   service: name=httpd state=started enabled=yes
 
-- name: Change the httpd.conf to template file ( CentOS6 Apache 2.2 )
-  copy: src=httpd22.conf dest=/etc/httpd/conf/httpd.conf owner=root group=root mode=0644
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 6
-  notify: restart httpd
-
-- name: Change the httpd.conf to template file ( Amazon Linux Apache 2.2 )
-  copy: src=httpd22.conf dest=/etc/httpd/conf/httpd.conf owner=root group=root mode=0644
-  when: ansible_distribution == 'Amazon'
-  notify: restart httpd
-
-- name: Change the httpd.conf to template file ( CentOS7 Apache 2.4 )
-  copy: src=httpd24.conf dest=/etc/httpd/conf/httpd.conf owner=root group=root mode=0644
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
-  notify: restart httpd
-
 - name: copy /etc/httpd/conf.d/
-  copy: src=etc/httpd/conf.d/ dest=/etc/httpd/conf.d/ backup=yes
+  copy: src=common/etc/httpd/conf.d/ dest=/etc/httpd/conf.d/ backup=yes
   notify: restart httpd
 
+## Makes VirtualHost
 - name: Makes to Default DocumentRoot
   file: path=/var/www/_default_ state=directory owner=root group=root mode=0755
 
@@ -37,6 +24,16 @@
   with_items:
     - "{{ site }}"
 
+## Include when OS and Version
+- include: apache_CentOS6.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 6
+
+- include: initialize-CentOS6.yml
+  when: ansible_distribution == 'Amazon'
+
+- include: initialize-CentOS7.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
+
 ## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
 - name: copy /etc/awslogs/config/
   template: src=awslogs.conf dest=/etc/awslogs/config/apache-{{ item.domain }}.conf backup=yes
@@ -45,18 +42,6 @@
   notify: restart awslogs agent
 
 - name: copy /etc/dd-agent/
-  copy: src=etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
+  copy: src=common/etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
   when: datadog == true
   notify: restart datadog-agent
-
-- name: logrotate ( CentOS6 Apache 2.2 )
-  copy: src=logrotate-http22 dest=/etc/logrotate.d/httpd owner=root group=root mode=0644
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 6
-
-- name: logrotate ( Amazon Linux Apache 2.2 )
-  copy: src=logrotate-http22 dest=/etc/logrotate.d/httpd owner=root group=root mode=0644
-  when: ansible_distribution == 'Amazon'
-
-- name: logrotate ( CentOS7 Apache 2.4 )
-  copy: src=logrotate-http24 dest=/etc/logrotate.d/httpd owner=root group=root mode=0644
-  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
