@@ -1,0 +1,6 @@
+check process nginx
+    with pidfile "/var/run/nginx.pid"
+    start program "/etc/init.d/nginx start"
+    stop program "/etc/init.d/nginx stop"
+    if failed port 80 protocol ssh then restart
+    if 5 restart within 5 cycles then timeout
