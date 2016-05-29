@@ -6,6 +6,8 @@
 
 ## files
 - files直下はOSもしくはVersionのディレクトリを配置する
+- その配下に/ディレクトリ以降のファイルパスを配置する
+- OS/Versionに依存しないものはcommonディレクトリに配置する
 ~~~
 .
 ├── centos6
@@ -27,7 +29,6 @@
 │       │       └── apache.yaml
 │       └── httpd
 │           └── conf.d
-│               ├── _default_.conf
 │               ├── autoindex.conf
 │               └── welcome.conf
 ├── ver2.2
@@ -43,3 +44,8 @@
         ├── logrotate.d
         │   └── httpd
         └── monit.d
+~~~
+- コピーする際にファイル名を指定せずにディレクトリを指定する
+~~~
+  copy: src=ver2.4/etc/httpd/ dest=/etc/httpd/ owner=root group=root mode=0644
+~~~
