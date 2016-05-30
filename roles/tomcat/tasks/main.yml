@@ -1,12 +1,16 @@
+- name: include vars
+  include_vars: "{{ ansible_distribution }}.yml"
+
 - name: yum install for Tomcat Application Server
-  yum: name=={{ item }} state=latest
-  with_items:
-    - java
-    - tomcat
-    - tomcat-webapps
+  yum: name={{ item }} state=latest
+  with_items: "{{ tomcat_pkg_name }}"
 
-- name: Start to Tomcat
-  service: name=tomcat enabled=yes
+- name: yum remove for other version of Tomcat and jdk
+  yum: name={{ item }} state=absent
+  with_items: "{{ tomcat_uninstall_pkg_name }}"
 
-- name: Start to Tomcat
-  service: name=tomcat state=started
+- name: Start Tomcat on boot
+  service: name="{{ tomcat }}" enabled=yes
+
+- name: Start Tomcat
+  service: name="{{ tomcat }}" state=started
