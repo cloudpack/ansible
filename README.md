@@ -7,6 +7,7 @@ CFn内のUserDataでも可です。
     yum update -y
     yum install epel-release -y
     yum install gcc python-devel python-crypto python-pip git openssl-devel libffi-devel -y
+    export PATH=$PATH:/usr/local/bin
     easy_install pip
     pip install --upgrade pip
     pip install --upgrade setuptools
