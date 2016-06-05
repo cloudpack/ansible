@@ -26,6 +26,6 @@
     - mailx
 
 - name: Start and Enable to Command
-  service: name=httpd state=started enabled=yes
+  service: name={{ item }} state=started enabled=yes
   with_items:
     - monit
