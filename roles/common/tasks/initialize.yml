@@ -16,7 +16,7 @@
     line: HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '
 
 - name: (Initialize) Logrotate.d
-  copy: src=etc/logrotate.d dest=/etc/logrotate.d/ owner=root group=root mode=0755
+  copy: src=etc/logrotate.d/ dest=/etc/logrotate.d/ owner=root group=root mode=0755
 
 - set_fact:
     swap_file_path: /swapfile
