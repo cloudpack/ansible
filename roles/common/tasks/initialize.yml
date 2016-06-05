@@ -3,7 +3,7 @@
   notify: restart rsyslog agent  
 
 - name: (Initialize) motd.sh setting
-  copy: src=motd.sh dest=/etc/profile.d/ owner=root group=root mode=0755
+  copy: src=etc/profile.d/ dest=/etc/profile.d/ owner=root group=root mode=0755
 
 - name: (Initialize) history file setting 1
   lineinfile:
@@ -14,6 +14,9 @@
   lineinfile:
     dest: /etc/bashrc
     line: HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S '
+
+- name: (Initialize) Logrotate.d
+  copy: src=etc/logrotate.d dest=/etc/logrotate.d/ owner=root group=root mode=0755
 
 - set_fact:
     swap_file_path: /swapfile
