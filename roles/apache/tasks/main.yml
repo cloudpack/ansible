@@ -28,10 +28,10 @@
 - include: apache_CentOS6.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 6
 
-- include: apache-CentOS6.yml
+- include: apache_CentOS6.yml
   when: ansible_distribution == 'Amazon'
 
-- include: apache-CentOS7.yml
+- include: apache_CentOS7.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
 
 ## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
