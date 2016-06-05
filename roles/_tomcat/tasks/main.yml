@@ -2,7 +2,7 @@
   include_vars: "{{ ansible_distribution }}.yml"
 
 - name: yum install for Tomcat Application Server
-  yum: name={{ item }} state=latest
+  yum: name={{ item }}
   with_items: "{{ tomcat_pkg_name }}"
 
 - name: yum remove for other version of Tomcat and jdk

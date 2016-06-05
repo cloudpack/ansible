@@ -1,5 +1,5 @@
 - name: yum install for MonitoringTools command
-  yum: name={{ item }} state=latest
+  yum: name={{ item }}
   with_items:
     - nrpe
     - nagios-plugins-nrpe

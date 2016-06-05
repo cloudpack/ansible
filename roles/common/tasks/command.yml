@@ -1,5 +1,5 @@
 - name: (Investigation Command) yum install
-  yum: name={{ item }} state=latest
+  yum: name={{ item }}
   with_items:
     - dstat
     - sysstat
