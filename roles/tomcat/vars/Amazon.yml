@@ -1,0 +1,12 @@
+tomcat: tomcat7
+tomcat_pkg_name:
+  - java-1.8.0-openjdk
+  - tomcat7
+  - tomcat7-webapps
+tomcat_uninstall_pkg_name:
+  - java-1.6.0-openjdk
+  - java-1.6.0-openjdk-headless
+  - java-1.7.0-openjdk
+  - java-1.7.0-openjdk-headless
+  - tomcat6*
+  - tomcat8*
