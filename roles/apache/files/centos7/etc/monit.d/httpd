@@ -2,5 +2,5 @@ check process httpd
     with pidfile "/var/run/httpd/httpd.pid"
     start program "/usr/bin/systemctl start httpd"
     stop program "/usr/bin/systemctl stop httpd"
-    if failed port 80 protocol ssh then restart
+    if failed port 80 protocol http then restart
     if 5 restart within 5 cycles then timeout
