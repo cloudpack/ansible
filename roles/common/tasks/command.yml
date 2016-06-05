@@ -11,7 +11,7 @@
     - monit
 
 - name: (Need Command) yum install
-  yum: name={{ item }} state=latest
+  yum: name={{ item }}
   with_items:
     - vim
     - wget
@@ -24,3 +24,8 @@
     - screen
     - mlocate
     - mailx
+
+- name: Start and Enable to Command
+  service: name=httpd state=started enabled=yes
+  with_items:
+    - monit
