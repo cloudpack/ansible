@@ -27,8 +27,7 @@
     curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -o /tmp/awslogs-agent-setup.py
     python /tmp/awslogs-agent-setup.py --region `curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e s/.$//g` --non-interactive --configfile ansible/roles/common/files/etc/awslogs/awslogs.conf
   notify: restart awslogs agent
-  when: "ansible_os_family == 'RedHat'"
-  when: not check_startup_file.stat.exists
+  when: (ansible_os_family == 'RedHat') and (not check_startup_file.stat.exists)
 
 - name: copy /var/awslogs/etc/
   copy: src=etc/awslogs/ dest=/var/awslogs/etc/ backup=yes

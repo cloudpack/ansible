@@ -1,5 +1,25 @@
+- name: Add nginx repositories for CentOS
+  yum_repository:
+    name: nginx
+    description: nginx
+    baseurl: http://nginx.org/packages/centos/{{ ansible_distribution_major_version }}/$basearch/
+    priority: 1
+    gpgcheck: no
+  when: ansible_distribution == "CentOS" and nginx_version is defined and nginx_version == "1.10"
+
+- name: Add nginx repositories for AmazonLinux
+  yum_repository:
+    name: nginx 
+    description: nginx
+    baseurl: http://nginx.org/packages/centos/6/$basearch/
+    priority: 1
+    gpgcheck: no
+  when: ansible_distribution == "Amazon" and nginx_version is defined and nginx_version == "1.10"
+
 - name: install nginx
-  yum: name=nginx
+  yum: name=nginx state=latest
+
+
 
 - name: Start and Enable to nginx
   service: name=nginx state=started enabled=yes
@@ -18,20 +38,28 @@
 - name: Makes to VirtualHost
   template: src=virtualhost.conf dest=/etc/nginx/conf.d/{{ item.domain }}.conf
   with_items:
-    - "{{ site }}"
+    - "{{ site | default([]) }}"
   notify: restart nginx
 
 - name: Makes to VirtualHost DocumentRoot
   file: path=/var/www/{{ item.domain }} state=directory owner={{ item.owner }} group={{ item.group }} mode=0755
   with_items:
-    - "{{ site }}"
+    - "{{ site | default([]) }}"
 
-## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
-- name: copy /etc/awslogs/config/
+# Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
+- name: copy /etc/awslogs/config/ for AmzaonLinux
   template: src=awslogs.conf dest=/etc/awslogs/config/nginx-{{ item.domain }}.conf backup=yes
   with_items:
-    - "{{ site }}"
+    - "{{ site | default([]) }}"
   notify: restart awslogs agent
+  when: ansible_distribution == 'Amazon'
+
+- name: copy /var/awslogs/etc/config/ for CentOS
+  template: src=awslogs.conf dest=/var/awslogs/etc/config/nginx-{{ item.domain }}.conf backup=yes
+  with_items:
+    - "{{ site | default([]) }}"
+  notify: restart awslogs agent
+  when: ansible_distribution == 'CentOS'
 
 - name: copy /etc/dd-agent/
   copy: src=etc/dd-agent/ dest=/etc/dd-agent/ backup=yes

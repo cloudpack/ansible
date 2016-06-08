@@ -32,7 +32,7 @@
     - php-pecl-apcu
     - php-process
     - php-xml
-    - php-gd
+    # - php-gd
 
 - name: copy /etc/php-fpm.d/
   copy: src=etc/php-fpm.d/ dest=/etc/php-fpm.d/ backup=yes
@@ -56,4 +56,4 @@
   notify: restart datadog-agent
 
 - name: copy /etc/logrotate.d/
-  copy: src=/etc/logrotate.d/ dest=/etc/logrotate.d/
+  copy: src=etc/logrotate.d/ dest=/etc/logrotate.d/

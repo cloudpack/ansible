@@ -1,1 +1,5 @@
 datadog: "false"
+# nginx_version: "1.10"
+# site:
+#  - { domain: "www.test1.com", owner: "root", group: "root" }
+#  - { domain: "www.test2.co.jp", owner: "nginx", group: "root" }
