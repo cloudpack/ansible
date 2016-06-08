@@ -1,22 +1,144 @@
-- name: remi Install
-  yum: name=http://rpms.famillecollet.com/enterprise/remi-release-6.rpm state=present
+# - include: "{{ ansible_distribution }}.yml"
 
-- replace: dest=/etc/yum.repos.d/{{item}} regexp="enabled *= *1" replace="enabled=0"
-  with_items:
-    - remi.repo
-    - remi-php70.repo
-    - remi-safe.repo
+- name: include vars
+  include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
 
-- name: priority modifyed to remi-php70
-  copy: src=etc/yum.repos.d/remi-php70.repo dest=/etc/yum.repos.d/remi-php70.repo owner=root group=root mode=0644
+- name: Add remi repo
+  yum_repository:
+    file: remi
+    name: remi
+    description: Remi's RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch
+    mirrorlist: "{{ remi_repourl }}/{{ remi_repo_ver }}/remi/mirror"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
 
-#- name: priority modifyed to remi-php70
-#  yum_repository:
-#    name: remi-php70
-#    priority: 1
+- name: Add remi-php55 repo
+  yum_repository:
+    file: remi
+    name: remi-php55
+    description: Remi's PHP 5.5 RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch
+    mirrorlist: "{{ remi_repourl }}/{{ remi_repo_ver }}/php55/mirror"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-php56 repo
+  yum_repository:
+    file: remi
+    name: remi-php56
+    description: Remi's PHP 5.6 RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch
+    mirrorlist: "{{ remi_repourl }}/{{ remi_repo_ver }}/php56/mirror"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-test repo
+  yum_repository:
+    file: remi
+    name: remi-test
+    description: Remi's test RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch
+    mirrorlist: "{{ remi_repourl }}/{{ remi_repo_ver }}/test/mirror"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-debuginfo repo
+  yum_repository:
+    file: remi
+    name: remi-debuginfo
+    description: Remi's RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch - debuginfo
+    mirrorlist: "{{ remi_repourl }}/{{ remi_repo_ver }}/debug-remi/$basearch"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-php55-debuginfo repo
+  yum_repository:
+    file: remi
+    name: remi-php55-debuginfo
+    description: Remi's PHP 5.5 RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch - debuginfo
+    baseurl: "{{ remi_repourl }}/{{ remi_repo_ver }}/debug-php55/$basearch"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-php56-debuginfo repo
+  yum_repository:
+    file: remi
+    name: remi-php56-debuginfo
+    description: Remi's PHP 5.6 RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch - debuginfo
+    baseurl: "{{ remi_repourl }}/{{ remi_repo_ver }}/debug-php56/$basearch"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-test-debuginfo repo
+  yum_repository:
+    file: remi
+    name: remi-test-debuginfo
+    description: Remi's test RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch - debuginfo
+    baseurl: "{{ remi_repourl }}/{{ remi_repo_ver }}/debug-php56/$basearch"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-safe repo
+  yum_repository:
+    file: remi-safe
+    name: remi-safe
+    description: Safe Remi's RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch
+    mirrorlist: "{{ remi_repourl }}/{{ remi_repo_ver }}/safe/mirror"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-php70 repo
+  yum_repository:
+    file: remi-php70
+    name: remi-php70
+    description: Remi's PHP 7.0 RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch
+    mirrorlist: "{{ remi_repourl }}/{{ remi_repo_ver }}/php70/mirror"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+    priority: 1
+
+- name: Add remi-php70-debuginfo repo
+  yum_repository:
+    file: remi-php70
+    name: remi-php70-debuginfo
+    description: Remi's PHP 7.0 RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch - debuginfo
+    baseurl: "{{ remi_repourl }}/{{ remi_repo_ver }}/debug-php70/$basearch/"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-php70-test repo
+  yum_repository:
+    file: remi-php70
+    name: remi-php70-test
+    description: Remi's PHP 7.0 RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch
+    mirrorlist: "{{ remi_repourl }}/{{ remi_repo_ver }}/test70/mirror"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: Add remi-php70-test-debuginfo repo
+  yum_repository:
+    file: remi-php70
+    name: remi-php70-test-debuginfo
+    description: Remi's PHP 7.0 RPM repository for Enterprise Linux {{ remi_repo_ver }} - $basearch - debuginfo
+    baseurl: "{{ remi_repourl }}/{{ remi_repo_ver }}/debug-test70/$basearch/"
+    gpgkey: "{{ remi_gpgkey }}"
+    gpgcheck: yes
+    enabled: no
+
+- name: install libwebp from epel
+  yum: name=libwebp disablerepo=* enablerepo=epel
 
 - name: install php-fpm
-  yum: name={{ item }} state=latest enablerepo=remi-php70,remi
+  yum: name={{ item }} state=present enablerepo=remi,remi-safe,remi-php70
   with_items:
     - php
     - php-fpm
@@ -32,7 +154,7 @@
     - php-pecl-apcu
     - php-process
     - php-xml
-    # - php-gd
+    - php-gd
 
 - name: copy /etc/php-fpm.d/
   copy: src=etc/php-fpm.d/ dest=/etc/php-fpm.d/ backup=yes
