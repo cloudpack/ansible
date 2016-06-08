@@ -22,7 +22,6 @@
     - gcc
     - gcc-c++
     - screen
-    - mlocate
     - mailx
 
 - name: Start and Enable to Command
