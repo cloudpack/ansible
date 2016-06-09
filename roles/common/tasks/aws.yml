@@ -45,15 +45,6 @@
 
 - name: Install Ruby for CodeDeploy
   yum: name=ruby state=present
-  when: (ansible_distribution == "CentOS" and ansible_distribution_major_version == "7") or (ansible_distribution == "Amazon")
-
-- name: Install Ruby for CodeDeploy for CentOS6
-  yum: name=http://www.torutk.com/attachments/download/355/ruby-2.1.6-2.el6.x86_64.rpm state=present
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
-
-- name: Create Ruby Symlink for CodeDeploy for CentOS6
-  file: src=/usr/bin/ruby dest=/usr/bin/ruby2.0
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
 
 - name: check CodeDeploy agent
   shell: rpm -q codedeploy-agent
