@@ -171,6 +171,14 @@
 - name: copy /etc/awslogs/config/
   copy: src=etc/awslogs/config/ dest=/etc/awslogs/config/ backup=yes
   notify: restart awslogs agent
+  when: ansible_distribution == "Amazon"
+  notify: restart awslogs agent
+
+- name: copy /var/awslogs/etc/config
+  copy: src=etc/awslogs/config/ dest=/var/awslogs/etc/config/ backup=yes
+  notify: restart awslogs agent
+  when: ansible_distribution == "CentOS"
+  notify: restart awslogs agent
 
 - name: copy /etc/dd-agent/
   copy: src=etc/dd-agent/ dest=/etc/dd-agent/ backup=yes
