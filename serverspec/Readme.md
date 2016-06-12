@@ -2,7 +2,7 @@
 
 ### 事前準備
 
-    yum install -y ruby ruby-devel;gem install io-console bundler --no-rdoc --no-ri;cd ansible;bundle
+    yum install -y ruby ruby-devel;gem install io-console bundler --no-rdoc --no-ri;cd ansible/serverspec;bundle
 
 ### 実行
 
