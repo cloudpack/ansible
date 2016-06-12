@@ -1,3 +1,4 @@
+aws_region: "ap-northeast-1"
 datadog: "false"
 # nginx_version: "1.10"
 # site:
