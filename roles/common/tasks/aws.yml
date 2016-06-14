@@ -40,6 +40,9 @@
 - name: install ssm agent
   yum: name=/usr/local/src/amazon-ssm-agent.rpm state=present
 
+- name: Start and Enable ssm agent
+  service: name=amazon-ssm-agent state=started enabled=yes
+
 - name: Install Ruby for CodeDeploy
   yum: name=ruby state=present
 
