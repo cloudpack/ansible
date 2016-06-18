@@ -4,25 +4,15 @@
     - awscli
     - boto3
 
-- name: install awslogs agent
+- name: install awslogs agent to Amazon Linux 
   yum: name=awslogs
-  when: "ansible_distribution == 'Amazon'"
-
-- name: copy /etc/awslogs/
-  copy: src=etc/awslogs/ dest=/etc/awslogs/ backup=yes
-  notify: restart awslogs agent
-  when: "ansible_distribution == 'Amazon'"
-
-- name: set region to /etc/awslogs/awscli.conf
-  replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace={{ aws_region }}
-  notify: restart awslogs agent
   when: "ansible_distribution == 'Amazon'"
 
 - name: check exists awslogs startup script
   stat: path="/etc/init.d/awslogs"
   register: check_startup_file
 
-- name: copy awslogs.conf
+- name: template copy awslogs.conf
   copy: src=etc/awslogs/awslogs.conf dest=/tmp/awslogs.conf backup=yes
   when: (ansible_distribution == 'CentOS') and (not check_startup_file.stat.exists)
 
@@ -33,10 +23,18 @@
   notify: restart awslogs agent
   when: (ansible_distribution == 'CentOS') and (not check_startup_file.stat.exists)
 
-- name: copy /var/awslogs/etc/
-  copy: src=etc/awslogs/ dest=/var/awslogs/etc/ backup=yes
+
+- name: template copy {{ awslogs_config_dir_path }}awslogs.conf
+  template: src=etc/awslogs/awslogs.conf dest={{ awslogs_config_dir_path }}awslogs.conf owner=root group=root mode=0644 backup=yes
   notify: restart awslogs agent
-  when: ansible_distribution == 'CentOS'
+
+
+- name: set region to /etc/awslogs/awscli.conf
+  replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace={{ aws_region }}
+  notify: restart awslogs agent
+  when: "ansible_distribution == 'Amazon'"
+
+
 
 - name: download ssm agent
   get_url: url="https://amazon-ssm-{{ aws_region }}.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755

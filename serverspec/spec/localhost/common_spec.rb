@@ -49,9 +49,11 @@ if os[:family] == 'amazon'
   end
   awslogs_conf = '/etc/awslogs/awslogs.conf'
   awscli_conf = '/etc/awslogs/awscli.conf'
+  awslogs_statefile = '/var/lib/awslogs/agent-state'
 elsif os[:family] == 'redhat'
   awslogs_conf = '/var/awslogs/etc/awslogs.conf'
   awscli_conf = '/var/awslogs/etc/aws.conf'
+  awslogs_statefile = '/var/awslogs/state/agent-state'
 end
 
 describe file(awslogs_conf) do
@@ -68,6 +70,10 @@ end
 
 describe file(awscli_conf) do
   its(:content) { should match /^region = ap-northeast-1$/ }
+end
+
+describe file(awslogs_statefile) do
+  it { should exist }
 end
 
 describe package('amazon-ssm-agent') do
