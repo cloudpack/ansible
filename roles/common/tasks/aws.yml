@@ -59,3 +59,7 @@
 
 - name: Start and Enable CodeDeploy agent
   service: name=codedeploy-agent state=started enabled=yes
+  
+- name: Enable CodeDeploy agent for CentOS
+  shell: /bin/systemctl enable codedeploy-agent
+  when: ansible_distribution == 'CentOS'
