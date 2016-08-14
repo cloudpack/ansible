@@ -39,7 +39,7 @@
 
 ## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
 - name: copy {{ awslogs_config_dir_path }}
-  template: src=awslogs.conf dest={{ awslogs_config_dir_path }}apache-{{ item.domain }}.conf backup=yes
+  template: src=awslogs.conf dest={{ awslogs_config_dir_path }}config/apache-{{ item.domain }}.conf backup=yes
   with_items:
     - "{{ site }}"
   notify: restart awslogs agent
