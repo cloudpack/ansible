@@ -138,11 +138,7 @@
   yum: name=libwebp disablerepo=* enablerepo=epel
 
 - name: install php-fpm
-<<<<<<< HEAD
-  yum: name={{ item }} enablerepo=remi-php70,remi
-=======
   yum: name={{ item }} state=present enablerepo=remi,remi-safe,remi-php70
->>>>>>> sasaki_dev
   with_items:
     - php
     - php-fpm
