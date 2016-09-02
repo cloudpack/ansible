@@ -3,3 +3,6 @@
 
 - name: restart rsyslog agent
   service: name=rsyslog state=restarted enabled=yes
+
+- name: restart codedeploy agent
+  service: name=codedeploy-agent state=restarted enabled=yes
