@@ -35,8 +35,8 @@
   when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
 
 ## Common Conifgration ( CloudWatch Logs & Datadog Integration & logrotate )
-- name: copy /etc/awslogs/config/
-  template: src=awslogs.conf dest=/etc/awslogs/config/apache-{{ item.domain }}.conf backup=yes
+- name: copy {{ awslogs_config_dir_path }}
+  template: src=awslogs.conf dest={{ awslogs_config_dir_path }}config/apache-{{ item.domain }}.conf backup=yes
   with_items:
     - "{{ site }}"
   notify: restart awslogs agent

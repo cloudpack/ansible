@@ -4,39 +4,40 @@
     - awscli
     - boto3
 
-- name: install awslogs agent
+- name: install awslogs agent to Amazon Linux 
   yum: name=awslogs
-  when: "ansible_distribution == 'Amazon'"
-
-- name: copy /etc/awslogs/
-  copy: src=etc/awslogs/ dest=/etc/awslogs/ backup=yes
-  notify: restart awslogs agent
-  when: "ansible_distribution == 'Amazon'"
-
-- name: set region to /etc/awslogs/awscli.conf
-  replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace=ap-northeast-1
-  notify: restart awslogs agent
   when: "ansible_distribution == 'Amazon'"
 
 - name: check exists awslogs startup script
   stat: path="/etc/init.d/awslogs"
   register: check_startup_file
 
-- name: Install awslogs agent to RHEL or CentOS
+- name: template copy awslogs.conf
+  copy: src=etc/awslogs/awslogs.conf dest=/tmp/awslogs.conf backup=yes
+  when: (ansible_distribution == 'CentOS') and (not check_startup_file.stat.exists)
+
+- name: Install awslogs agent to CentOS
   shell: |
     curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -o /tmp/awslogs-agent-setup.py
-    python /tmp/awslogs-agent-setup.py --region `curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed -e s/.$//g` --non-interactive --configfile ansible/roles/common/files/etc/awslogs/awslogs.conf
+    python /tmp/awslogs-agent-setup.py --region {{ aws_region }} --non-interactive --configfile /tmp/awslogs.conf
   notify: restart awslogs agent
-  when: "ansible_os_family == 'RedHat'"
-  when: not check_startup_file.stat.exists
+  when: (ansible_distribution == 'CentOS') and (not check_startup_file.stat.exists)
 
-- name: copy /var/awslogs/etc/
-  copy: src=etc/awslogs/ dest=/var/awslogs/etc/ backup=yes
+
+- name: template copy {{ awslogs_config_dir_path }}awslogs.conf
+  template: src=etc/awslogs/awslogs.conf dest={{ awslogs_config_dir_path }}awslogs.conf owner=root group=root mode=0644 backup=yes
   notify: restart awslogs agent
-  when: "ansible_os_family == 'RedHat'"
+
+
+- name: set region to /etc/awslogs/awscli.conf
+  replace: dest=/etc/awslogs/awscli.conf regexp=us-east-1 replace={{ aws_region }}
+  notify: restart awslogs agent
+  when: "ansible_distribution == 'Amazon'"
+
+
 
 - name: download ssm agent
-  get_url: url="https://amazon-ssm-ap-northeast-1.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
+  get_url: url="https://amazon-ssm-{{ aws_region }}.s3.amazonaws.com/latest/linux_amd64/amazon-ssm-agent.rpm" dest="/usr/local/src/amazon-ssm-agent.rpm" mode=0755
 - name: install ssm agent
   yum: name=/usr/local/src/amazon-ssm-agent.rpm state=present
 
@@ -52,7 +53,7 @@
   failed_when: False
 
 - name: Download CodeDeploy agent Installer
-  get_url: url="https://aws-codedeploy-ap-northeast-1.s3.amazonaws.com/latest/install" dest="/tmp/code-deploy-install" mode=0755
+  get_url: url="https://aws-codedeploy-{{ aws_region }}.s3.amazonaws.com/latest/install" dest="/tmp/code-deploy-install" mode=0755
   when: check_codedeploy.rc == 1
 
 - name: Install CodeDeploy agent
@@ -61,3 +62,4 @@
 
 - name: Start and Enable CodeDeploy agent
   service: name=codedeploy-agent state=started enabled=yes
+

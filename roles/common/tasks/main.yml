@@ -1,3 +1,6 @@
+- name: include vars
+  include_vars: "{{ ansible_distribution }}{{ ansible_distribution_major_version }}.yml"
+  
 - include: epel.yml
 - include: command.yml
 - include: aws.yml
