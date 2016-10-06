@@ -1,4 +1,4 @@
-- include: centos7-php54.ymli
+- include: centos7-php54.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7
 #  when: ansible_os_family == 'RedHat' and ansible_distribution_version.split('.')[0]|int == 7 and {{ php }} == "54"
 
